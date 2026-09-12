@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt update
           sudo apt install -y \
@@ -25,14 +25,10 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install buildozer cython==0.29.34
-          
+
       - name: Accept Android SDK licenses
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: Install Android Build Tools
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;37.0.0" "platforms;android-35"
 
       - name: Build APK
         run: |
