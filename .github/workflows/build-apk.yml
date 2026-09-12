@@ -49,9 +49,25 @@ jobs:
         run: |
           SDK="$HOME/.buildozer/android/platform/android-sdk"
 
-          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+          echo "Searching for sdkmanager..."
 
-          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" \
+          SDKMANAGER=$(find "$SDK" -name sdkmanager -type f | head -n 1)
+
+          if [ -z "$SDKMANAGER" ]; then
+            echo "ERROR: sdkmanager was not found!"
+            echo "SDK contents:"
+            find "$SDK" -maxdepth 4 -type f | head -n 100
+            exit 1
+          fi
+
+          echo "Found sdkmanager:"
+          echo "$SDKMANAGER"
+
+          chmod +x "$SDKMANAGER"
+
+          yes | "$SDKMANAGER" --licenses || true
+
+          yes | "$SDKMANAGER" \
             "platform-tools" \
             "platforms;android-35" \
             "build-tools;37.0.0"
