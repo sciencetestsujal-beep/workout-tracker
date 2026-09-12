@@ -28,49 +28,19 @@ jobs:
             autoconf \
             automake \
             libtool \
+            libltdl-dev \
             pkg-config \
-            libffi-dev \
-            libssl-dev \
             zlib1g-dev \
             libncurses5-dev \
             libncursesw5-dev \
-            cmake
+            cmake \
+            libffi-dev \
+            libssl-dev
 
       - name: Install Buildozer
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install buildozer cython==0.29.36
-
-      - name: Initialize Buildozer
-        run: |
-          buildozer android debug || true
-
-      - name: Accept Android SDK licenses
-        run: |
-          SDK="$HOME/.buildozer/android/platform/android-sdk"
-
-          echo "Searching for sdkmanager..."
-
-          SDKMANAGER=$(find "$SDK" -name sdkmanager -type f | head -n 1)
-
-          if [ -z "$SDKMANAGER" ]; then
-            echo "ERROR: sdkmanager was not found!"
-            echo "SDK contents:"
-            find "$SDK" -maxdepth 4 -type f | head -n 100
-            exit 1
-          fi
-
-          echo "Found sdkmanager:"
-          echo "$SDKMANAGER"
-
-          chmod +x "$SDKMANAGER"
-
-          yes | "$SDKMANAGER" --licenses || true
-
-          yes | "$SDKMANAGER" \
-            "platform-tools" \
-            "platforms;android-35" \
-            "build-tools;37.0.0"
 
       - name: Build APK
         run: |
