@@ -1,24 +1,23 @@
-[app]
+name: Build Android APK
 
-title = Workout Tracker
-package.name = workouttracker
-package.domain = org.sujal
+on:
+  workflow_dispatch:
 
-source.dir = .
-source.include_exts = py,png,jpg,jpeg,kv,json
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-version = 1.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-requirements = python3,kivy
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          workdir: .
 
-orientation = portrait
-fullscreen = 0
-
-android.archs = arm64-v8a
-android.api = 35
-android.minapi = 24
-
-[buildozer]
-
-log_level = 2
-warn_on_root = 0
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Workout-Tracker-APK
+          path: ./**/*.apk
