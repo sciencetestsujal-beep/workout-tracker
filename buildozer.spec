@@ -15,6 +15,8 @@ orientation = portrait
 fullscreen = 0
 
 android.archs = arm64-v8a
+android.api = 35
+android.minapi = 24
 
 [buildozer]
 
